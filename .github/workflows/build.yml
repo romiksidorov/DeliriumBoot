@@ -1,0 +1,58 @@
+name: Build DeliriumBoot APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build debug APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout репозитория
+        uses: actions/checkout@v4
+
+      - name: Настройка JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Настройка Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Установка Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Генерация Gradle Wrapper
+        working-directory: ./DeliriumBoot
+        run: gradle wrapper --gradle-version 8.7
+
+      - name: Сделать gradlew исполняемым
+        working-directory: ./DeliriumBoot
+        run: chmod +x ./gradlew
+
+      - name: Скачать и подготовить загрузчик Ventoy 1.1.18
+        run: |
+          mkdir -p DeliriumBoot/app/src/main/assets/ventoy
+          curl -L https://github.com/ventoy/Ventoy/releases/download/v1.1.18/ventoy-1.1.18-linux.tar.gz -o ventoy.tar.gz
+          tar -xzf ventoy.tar.gz
+          xz -d -c ventoy-1.1.18/ventoy/ventoy.disk.img.xz > DeliriumBoot/app/src/main/assets/ventoy/core.img
+          cp ventoy-1.1.18/boot/boot.img DeliriumBoot/app/src/main/assets/ventoy/stage1.bin
+          rm -rf ventoy.tar.gz ventoy-1.1.18
+
+      - name: Собрать debug-APK
+        working-directory: ./DeliriumBoot
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Загрузить APK в артефакты
+        uses: actions/upload-artifact@v4
+        with:
+          name: DeliriumBoot-debug-apk
+          path: DeliriumBoot/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
