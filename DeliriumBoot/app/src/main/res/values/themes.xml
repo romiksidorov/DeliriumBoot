@@ -1,0 +1,7 @@
+<resources>
+    <style name="Theme.DeliriumBoot" parent="android:Theme.Material.NoActionBar">
+        <item name="android:statusBarColor">@color/delirium_background</item>
+        <item name="android:navigationBarColor">@color/delirium_background</item>
+        <item name="android:windowBackground">@color/delirium_background</item>
+    </style>
+</resources>

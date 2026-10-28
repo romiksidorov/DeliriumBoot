@@ -1,0 +1,8 @@
+<resources>
+    <color name="delirium_background">#0B0410</color>
+    <color name="delirium_surface">#17091F</color>
+    <color name="delirium_primary">#B621FE</color>
+    <color name="delirium_secondary">#00E5C7</color>
+    <color name="delirium_error">#FF4D6D</color>
+    <color name="delirium_text">#F3E9FF</color>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Фильтр USB-устройств: класс 08 = Mass Storage (флеш-накопители,
+    USB-HDD/SSD через OTG-переходник). Благодаря этому фильтру система
+    Android предложит открыть DeliriumBoot сразу при подключении флешки.
+-->
+<resources>
+    <usb-device class="8" />
+</resources>
