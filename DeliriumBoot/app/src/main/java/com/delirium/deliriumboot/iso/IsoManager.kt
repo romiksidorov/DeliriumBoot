@@ -40,9 +40,7 @@ class IsoManager(private val contentResolver: ContentResolver, private val fileS
         onProgress: (Float) -> Unit,
         onLog: (String) -> Unit
     ) {
-        if (fileSystem == FileSystemType.NTFS) {
-            throw IOException("Копирование на NTFS пока не поддерживается в этой версии приложения.")
-        }
+// NTFS запись поддерживается через NtfsFileWriter
         onLog("Копирование «${file.name}» (${file.size / (1024 * 1024)} МиБ)…")
         val input = contentResolver.openInputStream(file.uri)
             ?: throw IOException("Не удалось открыть выбранный файл")
