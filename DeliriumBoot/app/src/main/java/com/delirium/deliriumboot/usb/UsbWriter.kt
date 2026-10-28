@@ -56,7 +56,7 @@ class UsbWriter(
      */
     fun writeAt(startLba: Long, data: ByteArray, onProgress: ((Float) -> Unit)? = null) {
         val t = transport ?: throw IOException("Устройство не открыто (вызовите open())")
-        val maxChunkSectors = 128 // ~64 КБ за одну передачу — безопасно для большинства контроллеров
+        val maxChunkSectors = 32 // ~64 КБ за одну передачу — безопасно для большинства контроллеров
 
         val padded = if (data.size % sectorSize != 0) {
             val newSize = ((data.size / sectorSize) + 1) * sectorSize
