@@ -57,7 +57,12 @@ class IsoManager(private val contentResolver: ContentResolver, private val fileS
                     val info = ExFatFileWriter.readInfo(writer, plan.part1StartLba)
                     ExFatFileWriter.writeFile(writer, info, file.name, file.size, stream, onProgress)
                 }
-                FileSystemType.NTFS -> Unit
+                FileSystemType.NTFS -> {
+                    val info = com.delirium.deliriumboot.fs.NtfsFileWriter.readInfo(writer, plan.part1StartLba)
+                    com.delirium.deliriumboot.fs.NtfsFileWriter.writeFile(writer, info, file.name, file.size, stream) { p, _ ->
+                        onProgress(p)
+                    }
+                }
             }
         }
         onLog("✔ «${file.name}» успешно записан на DeliriumBoot-накопитель.")
